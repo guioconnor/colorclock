@@ -24,6 +24,31 @@
             return colour;
         }
 
+        var getColorRange = function(date) {
+            var lower,
+                upper;
+
+            date = Math.floor( date / resolution );
+            lower  = (date - 40).toString(16);
+            upper  = (date + 40).toString(16);
+
+            return {
+                lower: "#" + lower.substring(lower.length - 6, lower.length),
+                upper: "#" + upper.substring(upper.length - 6, upper.length)
+            }
+        }
+
+        var setGradient = function(element, start, end) {
+            element.css({                
+                "background": "-moz-linear-gradient(left,  "+ start +" 0%,  "+ end +"  100%)", /* FF3.6+ */
+                "background": "-webkit-gradient(linear, left top, right top, color-stop(0%,"+ start +"), color-stop(100%, "+ end +" ))", /* Chrome,Safari4+ */
+                "background": "-webkit-linear-gradient(left,  "+ start +" 0%, "+ end +"  100%)", /* Chrome10+,Safari5.1+ */
+                "background": "-o-linear-gradient(left,  "+ start +" 0%, "+ end +"  100%)", /* Opera 11.10+ */
+                "background": "-ms-linear-gradient(left,  "+ start +" 0%, "+ end +"  100%)", /* IE10+ */
+                "background": "linear-gradient(to right,  "+ start +" 0%, "+ end +"  100%)" /* W3C */
+            });
+        }
+
         setInterval(function(){
             var date          = new Date();
             var color         = getColor( date.getTime() );
@@ -38,6 +63,10 @@
             $("#colorMapR").css("background-color", "#"+ colorR +"0000").text( colorR );
             $("#colorMapG").css("background-color", "#00"+ colorG +"00").text( colorG );
             $("#colorMapB").css("background-color", "#0000"+ colorB +"").text( colorB );
+
+            gradient = getColorRange( date.getTime() );
+
+            // setGradient( $("#gradient") , gradient.lower , gradient.upper  )
 
         }, resolution)
 
@@ -91,6 +120,14 @@
             font-size: 18px;
             line-height: 34px;
         }
+
+        #gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 25px;
+        }
     </style>
 </head>
 <body>
@@ -102,6 +139,7 @@
         <div id="colorMapG" class="colorComponent"></div>
         <div id="colorMapB" class="colorComponent"></div>
     </div>
+    <div id="gradient"></div>
 </article>
 
 
