@@ -4,6 +4,36 @@
     <title>Colour clock</title>
     <script src="jquery-1.10.2.js"></script>
     <script>
+        
+        var audio = false;
+
+        // Audio
+        // http://stackoverflow.com/questions/879152/how-do-i-make-javascript-beep
+        var audioCtx = new (window.AudioContext || window.webkitAudioContext || window.audioContext);
+        
+        //All arguments are optional:
+        
+        //duration of the tone in milliseconds. Default is 500
+        //frequency of the tone in hertz. default is 440
+        //volume of the tone. Default is 1, off is 0.
+        //type of tone. Possible values are sine, square, sawtooth, triangle, and custom. Default is sine.
+        //callback to use on end of tone
+        function beep(duration, frequency, volume, type, callback) {
+            var oscillator = audioCtx.createOscillator();
+            var gainNode = audioCtx.createGain();
+        
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+        
+            if (volume){gainNode.gain.value = volume;};
+            if (frequency){oscillator.frequency.value = frequency;}
+            if (type){oscillator.type = type;}
+            if (callback){oscillator.onended = callback;}
+        
+            oscillator.start();
+            setTimeout(function(){oscillator.stop()}, (duration ? duration : 500));
+        };
+
 
         var resolution = 1000;// Unit: 1/s
         
@@ -64,11 +94,22 @@
             $("#colorMapG").css("background-color", "#00"+ colorG +"00").text( colorG );
             $("#colorMapB").css("background-color", "#0000"+ colorB +"").text( colorB );
 
+            if(audio){
+                // beep(100, 20 * Math.pow(2, date.getTime()%7+3));            
+                beep(100, 10 * (date.getTime()/1000)%6000 + 200);            
+            }
+
             gradient = getColorRange( date.getTime() );
 
             // setGradient( $("#gradient") , gradient.lower , gradient.upper  )
 
         }, resolution)
+
+        $(document).ready(function(){
+            $('#time').on('click', function(){
+                audio = !audio;
+            }); 
+        });
 
     </script>
 
@@ -114,6 +155,7 @@
             height: 120px;
             line-height: 120px;
             font-size: 100px;
+            cursor: pointer;
         }
 
         #color {
