@@ -1,0 +1,54 @@
+body {
+    font-family: 'Lato', 'Source Sans Pro', sans-serif;
+    color: #fff;
+    text-align: center;
+}
+
+article {
+    position: absolute;
+    margin-left: -220px;
+    width: 440px;
+    left: 50%;            
+    top: 50%;
+    margin-top: -120px;
+}
+
+.colorComponent {
+    float: left;
+    margin-right: 0.5%;
+    width: 33%;
+    height: 34px;
+    font-size: 18px;
+    line-height: 34px;
+    border-radius: 5px;
+}
+
+.colorComponent:last-child {
+    margin-right: 0;
+}
+
+.box {
+    border-radius: 5px;
+    background: rgba(0,0,0,.05);
+    margin-bottom: 5px;
+}
+
+#time {
+    height: 120px;
+    line-height: 120px;
+    font-size: 100px;
+    cursor: pointer;
+}
+
+#color {
+    font-size: 18px;
+    line-height: 34px;
+}
+
+#gradient {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 25px;
+}
